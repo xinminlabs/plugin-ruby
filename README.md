@@ -18,3 +18,21 @@ hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello[
   'test'
 ]
 ```
+
+### do not transform to ternary condition
+
+e.g.
+
+```
+if File.directory? entry
+  Dir[File.join(entry, '**', "*.rb")]
+else
+  entry
+end
+```
+
+won't be transformed to
+
+```
+File.directory? entry ? Dir[File.join(entry, '**', "*.rb")] : entry
+```
