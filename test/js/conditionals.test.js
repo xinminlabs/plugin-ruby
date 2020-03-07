@@ -9,18 +9,6 @@ describe("conditionals", () => {
     test("not operator from within a ternary adds parens", () => {
       return expect("a ? not(b) : c").toMatchFormat();
     });
-
-    test("not operator from within an if/else adds parens", () => {
-      const content = ruby(`
-        if a
-          not b
-        else
-          c
-        end
-      `);
-
-      return expect(content).toChangeFormat("a ? not(b) : c");
-    });
   });
 
   describe("when inline allowed", () => {
@@ -209,42 +197,6 @@ describe("conditionals", () => {
       `)
       ));
 
-    test("transform from if/else", () => {
-      const content = ruby(`
-        if a
-          1
-        else
-          2
-        end
-      `);
-
-      return expect(content).toChangeFormat("a ? 1 : 2");
-    });
-
-    test("transform for unless/else", () => {
-      const content = ruby(`
-        unless a
-          1
-        else
-          2
-        end
-      `);
-
-      return expect(content).toChangeFormat("a ? 2 : 1");
-    });
-
-    test("adds parens if inside of a call", () => {
-      const content = ruby(`
-        if a
-          1
-        else
-          2
-        end.to_s
-      `);
-
-      return expect(content).toChangeFormat("(a ? 1 : 2).to_s");
-    });
-
     test("does not add parens if it breaks", () => {
       const content = ruby(`
         if a
@@ -255,18 +207,6 @@ describe("conditionals", () => {
       `);
 
       return expect(content).toMatchFormat();
-    });
-
-    test("adds parens if inside of a binary", () => {
-      const content = ruby(`
-        if a
-          1
-        else
-          2
-        end + 1
-      `);
-
-      return expect(content).toChangeFormat("(a ? 1 : 2) + 1");
     });
 
     describe("unable to transform", () => {
