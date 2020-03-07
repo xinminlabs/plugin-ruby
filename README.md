@@ -1,7 +1,9 @@
 # xinminlabs-plugin-ruby
 
 This is a fork of prettier [plugin-ruby](https://github.com/prettier/plugin-ruby),
-which contains the following changes
+which is used in [Awesome Code](https://awesomecode.io)
+
+It contains the following changes
 
 ### do not add line break for aref node
 
@@ -35,4 +37,29 @@ won't be transformed to
 
 ```
 File.directory? entry ? Dir[File.join(entry, '**', "*.rb")] : entry
+```
+
+### wrap call name with group
+
+e.g.
+
+```
+Config::Download.new(
+  'rubocop-config-prettier',
+  filename: 'rubocop.yml',
+  url:
+    'https://raw.githubusercontent.com/xinminlabs/rubocop-config-prettier/master/config/rubocop.yml'
+).perform
+```
+
+won't be transformed to
+
+```
+Config::Download.new(
+  'rubocop-config-prettier',
+  filename: 'rubocop.yml',
+  url:
+    'https://raw.githubusercontent.com/xinminlabs/rubocop-config-prettier/master/config/rubocop.yml'
+)
+  .perform
 ```
