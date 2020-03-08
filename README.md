@@ -39,6 +39,22 @@ won't be transformed to
 File.directory? entry ? Dir[File.join(entry, '**', "*.rb")] : entry
 ```
 
+### do not transform to single line block
+
+e.g.
+
+```
+included do
+  has_many :build_items, dependent: :destroy
+end
+```
+
+won't be transformed to
+
+```
+included { has_many :build_items, dependent: :destroy }
+```
+
 ### wrap call name with group
 
 e.g.
