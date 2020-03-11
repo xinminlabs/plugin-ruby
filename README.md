@@ -21,7 +21,7 @@ hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello[
 ]
 ```
 
-### do not transform to ternary condition
+### do not transform to ternary condition and vice versa
 
 e.g.
 
@@ -37,6 +37,24 @@ won't be transformed to
 
 ```
 File.directory? entry ? Dir[File.join(entry, '**', "*.rb")] : entry
+```
+
+### do not trasform multiline if to inline if and vice versa
+
+e.g.
+
+```
+if result
+  'foo'
+else
+  'bar'
+end
+```
+
+won't be transformed to
+
+```
+result ? 'foo' : 'bar'
 ```
 
 ### do not transform to single line block
