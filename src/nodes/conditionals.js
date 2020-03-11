@@ -63,12 +63,11 @@ const printTernary = (path, _opts, print) => {
   return group(
     ifBreak(
       concat([
-        "if ",
-        align(3, predicate),
+        predicate,
+        " ? ",
         indent(concat([softline, truthyClause])),
-        concat([softline, "else"]),
-        indent(concat([softline, falsyClause])),
-        concat([softline, "end"])
+        " : ",
+        indent(concat([softline, falsyClause]))
       ]),
       concat([predicate, " ? "].concat(ternaryClauses))
     )

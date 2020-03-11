@@ -102,12 +102,10 @@ describe("conditionals", () => {
     test("breaking", () =>
       expect(`a ? ${long} : ${long}`).toChangeFormat(
         ruby(`
-        if a
-          ${long}
-        else
-          ${long}
-        end
-      `)
+          a ?
+            ${long} :
+            ${long}
+        `)
       ));
 
     test("does not add parens if it breaks", () => {
@@ -186,13 +184,11 @@ describe("conditionals", () => {
       test("align long predicates", () =>
         expect(`${long} || ${long}a ? foo : bar`).toChangeFormat(
           ruby(`
-          if ${long} ||
-               ${long}a
-            foo
-          else
-            bar
-          end
-        `)
+            ${long} ||
+              ${long}a ?
+              foo :
+              bar
+          `)
         ));
 
       test("lower precendence operators", () => {
