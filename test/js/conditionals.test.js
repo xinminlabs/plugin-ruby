@@ -11,176 +11,89 @@ describe("conditionals", () => {
     });
   });
 
-  describe("when inline allowed", () => {
-    describe.each(["if", "unless"])("%s keyword", keyword => {
-      test("inline stays", () => expect(`1 ${keyword} a`).toMatchFormat());
+  describe.each(["if", "unless"])("%s keyword", keyword => {
+    test("inline stays", () => expect(`1 ${keyword} a`).toMatchFormat());
 
-      test("multi line changes", () =>
-        expect(`${keyword} a\n  1\nend`).toChangeFormat(`1 ${keyword} a`));
+    test("multi line changes", () =>
+      expect(`${keyword} a\n  1\nend`).toMatchFormat());
 
-      test("inline breaking changes", () =>
-        expect(`${long} ${keyword} ${long}`).toChangeFormat(
-          `${keyword} ${long}\n  ${long}\nend`
-        ));
+    test("inline breaking changes", () =>
+      expect(`${long} ${keyword} ${long}`).toMatchFormat());
 
-      test("multi line breaking stays", () =>
-        expect(`${keyword} ${long}\n  ${long}\nend`).toMatchFormat());
+    test("multi line breaking stays", () =>
+      expect(`${keyword} ${long}\n  ${long}\nend`).toMatchFormat());
 
-      test("not operator", () => expect(`b ${keyword} not a`).toMatchFormat());
+    test("not operator", () => expect(`b ${keyword} not a`).toMatchFormat());
 
-      test("empty first body", () => {
-        const content = ruby(`
-          ${keyword} a
-          end
-        `);
+    test("empty first body", () => {
+      const content = ruby(`
+        ${keyword} a
+        end
+      `);
 
-        return expect(content).toMatchFormat();
-      });
-
-      test("empty first body with present second body", () => {
-        const content = ruby(`
-          ${keyword} a
-
-          else
-            b
-          end
-        `);
-
-        return expect(content).toMatchFormat();
-      });
-
-      test("comment in body", () => {
-        const content = ruby(`
-          ${keyword} a
-            # comment
-          end
-        `);
-
-        return expect(content).toMatchFormat();
-      });
-
-      test("comment on node in body", () => {
-        const content = ruby(`
-          ${keyword} a
-            break # comment
-          end
-        `);
-
-        return expect(content).toMatchFormat();
-      });
-
-      test("breaks if the predicate is an assignment", () => {
-        const content = ruby(`
-          ${keyword} a = 1
-            a
-          end
-        `);
-
-        return expect(content).toMatchFormat();
-      });
-
-      test("align long predicates", () =>
-        expect(`foo ${keyword} ${long} || ${long}a`).toChangeFormat(
-          ruby(`
-            ${keyword} ${long} ||
-                ${Array(keyword.length)
-                  .fill()
-                  .join(" ")}${long}a
-              foo
-            end
-          `)
-        ));
-
-      test("wraps single lines in parens when assigning", () =>
-        expect(`hash[:key] = ${keyword} false then :value end`).toChangeFormat(
-          `hash[:key] = (:value ${keyword} false)`
-        ));
+      return expect(content).toMatchFormat();
     });
-  });
 
-  describe("when inline not allowed", () => {
-    describe.each(["if", "unless"])("%s keyword", keyword => {
-      test("inline changes", () =>
-        expect(`1 ${keyword} a`).toChangeFormat(`${keyword} a\n  1\nend`, {
-          inlineConditionals: false
-        }));
+    test("empty first body with present second body", () => {
+      const content = ruby(`
+        ${keyword} a
 
-      test("multi line stays", () =>
-        expect(`${keyword} a\n  1\nend`).toMatchFormat({
-          inlineConditionals: false
-        }));
+        else
+          b
+        end
+      `);
 
-      test("inline breaking changes", () =>
-        expect(`${long} ${keyword} ${long}`).toChangeFormat(
-          `${keyword} ${long}\n  ${long}\nend`,
-          {
-            inlineConditionals: false
-          }
-        ));
+      return expect(content).toMatchFormat();
+    });
 
-      test("multi line breaking stays", () =>
-        expect(`${keyword} ${long}\n  ${long}\nend`).toMatchFormat({
-          inlineConditionals: false
-        }));
+    test("comment in body", () => {
+      const content = ruby(`
+        ${keyword} a
+          # comment
+        end
+      `);
 
-      test("not operator", () =>
-        expect(`${keyword} not a\n  b\nend`).toMatchFormat({
-          inlineConditionals: false
-        }));
+      return expect(content).toMatchFormat();
+    });
 
-      test("empty first body", () => {
-        const content = ruby(`
-          ${keyword} a
-          end
-        `);
+    test("comment on node in body", () => {
+      const content = ruby(`
+        ${keyword} a
+          break # comment
+        end
+      `);
 
-        return expect(content).toMatchFormat({ inlineConditionals: false });
-      });
+      return expect(content).toMatchFormat();
+    });
 
-      test("empty first body with present second body", () => {
-        const content = ruby(`
-          ${keyword} a
+    test("breaks if the predicate is an assignment", () => {
+      const content = ruby(`
+        ${keyword} a = 1
+          a
+        end
+      `);
 
-          else
-            b
-          end
-        `);
+      return expect(content).toMatchFormat();
+    });
 
-        return expect(content).toMatchFormat({ inlineConditionals: false });
-      });
-
-      test("comment in body", () => {
-        const content = ruby(`
-          ${keyword} a
-            # comment
-          end
-        `);
-
-        return expect(content).toMatchFormat({ inlineConditionals: false });
-      });
-
-      test("comment on node in body", () => {
-        const content = ruby(`
-          ${keyword} a
-            break # comment
-          end
-        `);
-
-        return expect(content).toMatchFormat({ inlineConditionals: false });
-      });
-
-      test("align long predicates", () =>
-        expect(`foo ${keyword} ${long} || ${long}a`).toChangeFormat(
-          ruby(`
-          ${keyword} ${long} ||
-              ${Array(keyword.length)
-                .fill()
-                .join(" ")}${long}a
-            foo
-          end
+    test("align long predicates", () =>
+      expect(`foo ${keyword} ${long} || ${long}a`).toChangeFormat(
+        ruby(`
+          foo ${keyword} ${long} ||
+            ${long}a
         `)
-        ));
-    });
+      ));
+
+    test("wraps single lines in parens when assigning", () =>
+      expect(`hash[:key] = ${keyword} false then :value end`).toChangeFormat(
+        ruby(`
+          hash[:key] =
+            ${keyword} false
+              :value
+            end
+        `)
+      )
+    );
   });
 
   describe("ternaries", () => {

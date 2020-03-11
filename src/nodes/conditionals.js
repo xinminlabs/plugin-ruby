@@ -79,53 +79,25 @@ const makeSingleBlockForm = (keyword, path, print) =>
   concat([
     `${keyword} `,
     align(keyword.length + 1, path.call(print, "body", 0)),
-    indent(concat([softline, path.call(print, "body", 1)])),
-    concat([softline, "end"])
+    indent(concat([hardline, path.call(print, "body", 1)])),
+    concat([hardline, "end"])
   ]);
 
 // Prints an `if_mod` or `unless_mod` node. Because it was previously in the
 // modifier form, we're guaranteed to not have an additional node, so we can
 // just work with the predicate and the body.
-const printSingle = keyword => (path, { inlineConditionals }, print) => {
-  const multiline = makeSingleBlockForm(keyword, path, print);
-
+const printSingle = keyword => (path, opts, print) => {
   const [_predicate, stmts] = path.getValue().body;
-  const hasComments =
-    stmts.type === "stmts" && stmts.body.some(stmt => stmt.type === "@comment");
 
-  if (!inlineConditionals || hasComments) {
-    return multiline;
-  }
-
-  let inlineParts = [
+  return concat([
     path.call(print, "body", 1),
     ` ${keyword} `,
     path.call(print, "body", 0)
-  ];
-
-  // If the return value of this conditional expression is being assigned to
-  // anything besides a local variable then we can't inline the entire
-  // expression without wrapping it in parentheses. This is because the
-  // following expressions have different semantic meaning:
-  //
-  //     hash[:key] = :value if false
-  //     hash[:key] = if false then :value end
-  //
-  // The first one will not result in an empty hash, whereas the second one
-  // will result in `{ key: nil }`. In this case what we need to do for the
-  // first expression to align is wrap it in parens, as in:
-  //
-  //     hash[:key] = (:value if false)
-  if (["assign", "massign"].includes(path.getParentNode().type)) {
-    inlineParts = ["("].concat(inlineParts).concat(")");
-  }
-
-  const inline = concat(inlineParts);
-  return group(ifBreak(multiline, inline));
+  ]);
 };
 
 // A normalized print function for both `if` and `unless` nodes.
-const printConditional = keyword => (path, { inlineConditionals }, print) => {
+const printConditional = keyword => (path, opts, print) => {
   const [predicate, statements, addition] = path.getValue().body;
 
   // If there's an additional clause that wasn't matched earlier, we know we
@@ -144,14 +116,7 @@ const printConditional = keyword => (path, { inlineConditionals }, print) => {
     ]);
   }
 
-  // If the predicate of the conditional contains an assignment, then we can't
-  // know for sure that it doesn't impact the body of the conditional, so we
-  // have to default to the block form.
-  if (containsAssignment(predicate)) {
-    return makeSingleBlockForm(keyword, path, print);
-  }
-
-  return printSingle(keyword)(path, { inlineConditionals }, print);
+  return makeSingleBlockForm(keyword, path, print);
 };
 
 module.exports = {
