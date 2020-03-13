@@ -39,7 +39,7 @@ won't be transformed to
 File.directory? entry ? Dir[File.join(entry, '**', "*.rb")] : entry
 ```
 
-### do not trasform multiline if to inline if and vice versa
+### do not transform multiline if to inline if and vice versa
 
 e.g.
 
@@ -55,6 +55,22 @@ won't be transformed to
 
 ```
 result ? 'foo' : 'bar'
+```
+
+### do not transform multiline while to inline while and vice verse
+
+e.g.
+
+```
+while true
+  break :value
+end
+```
+
+won't be transformed to
+
+```
+break :value while true
 ```
 
 ### do not transform to single line block
