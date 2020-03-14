@@ -73,7 +73,7 @@ won't be transformed to
 break :value while true
 ```
 
-### do not transform to single line block
+### do not transform to single line block and vice versa
 
 e.g.
 
@@ -87,29 +87,4 @@ won't be transformed to
 
 ```
 included { has_many :build_items, dependent: :destroy }
-```
-
-### wrap call name with group
-
-e.g.
-
-```
-Config::Download.new(
-  'rubocop-config-prettier',
-  filename: 'rubocop.yml',
-  url:
-    'https://raw.githubusercontent.com/xinminlabs/rubocop-config-prettier/master/config/rubocop.yml'
-).perform
-```
-
-won't be transformed to
-
-```
-Config::Download.new(
-  'rubocop-config-prettier',
-  filename: 'rubocop.yml',
-  url:
-    'https://raw.githubusercontent.com/xinminlabs/rubocop-config-prettier/master/config/rubocop.yml'
-)
-  .perform
 ```
