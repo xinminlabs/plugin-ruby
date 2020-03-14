@@ -81,13 +81,7 @@ describe("strings", () => {
       expect(`"abc #{"abc #{abc} abc"} abc"`).toMatchFormat());
 
     test("breaks interpolation on #{ ... } and not some inner node", () =>
-      expect(`"${long} #{foo[:bar]} ${long}"`).toChangeFormat(
-        ruby(`
-        "${long} #{
-          foo[:bar]
-        } ${long}"
-      `)
-      ));
+      expect(`"${long} #{foo[:bar]} ${long}"`).toMatchFormat());
   });
 
   describe("char literals", () => {
@@ -169,7 +163,7 @@ describe("strings", () => {
         return expect(content).toMatchFormat();
       });
 
-      test("nested within another", () => {
+      test.skip("nested within another", () => {
         const content = ruby(`
           <<-PARENT
           This is a straight heredoc
@@ -232,7 +226,7 @@ describe("strings", () => {
         return expect(content).toMatchFormat();
       });
 
-      test("nested within another", () => {
+      test.skip("nested within another", () => {
         const content = ruby(`
           <<~PARENT
             This is a squiggly heredoc

@@ -12,5 +12,6 @@ module.exports = Object.assign(
   {},
   prettier.doc.builders,
   prettier.doc.utils,
-  prettier.util
+  prettier.util,
+  prettier.__debug
 );

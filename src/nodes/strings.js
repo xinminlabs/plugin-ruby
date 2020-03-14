@@ -5,7 +5,8 @@ const {
   indent,
   literalline,
   softline,
-  join
+  join,
+  printDocToString,
 } = require("../prettier");
 
 const { concatBody, empty, makeList, prefix, surround } = require("../utils");
@@ -98,17 +99,13 @@ module.exports = {
   string_dvar: surround("#{", "}"),
   string_embexpr: (path, opts, print) => {
     const parts = path.call(print, "body", 0);
-
-    // If the interpolated expression is inside of an xstring literal (a string
-    // that gets sent to the command line) then we don't want to automatically
-    // indent, as this can lead to some very odd looking expressions
-    if (path.getParentNode().type === "xstring") {
-      return concat(["#{", parts, "}"]);
-    }
-
-    return group(
-      concat(["#{", indent(concat([softline, parts])), concat([softline, "}"])])
-    );
+    const string = printDocToString(
+      parts,
+      Object.assign({}, opts, {
+        printWidth: Infinity
+      })
+    ).formatted
+    return "#{" +  string + "}";
   },
   string_literal: (path, { preferSingleQuotes }, print) => {
     const stringLiteral = path.getValue();
