@@ -88,3 +88,20 @@ won't be transformed to
 ```
 included { has_many :build_items, dependent: :destroy }
 ```
+
+### do not tranform string_embexpr
+
+```
+"node ./node_modules/prettier/bin-prettier.js --plugin ./node_modules/xinminlabs-plugin-ruby --config #{FormatTool::DOCKER_FORMATRC_YAML} --ignore-path #{FormatTool::DOCKER_FORMAT_IGNORE} --write #{FormatTool::DOCKER_INPUT_PATH}/**/*.{rb,rake}"
+```
+
+won't be transformed to
+
+```
+"node ./node_modules/prettier/bin-prettier.js --plugin
+./node_modules/xinminlabs-plugin-ruby --config #{
+  FormatTool::DOCKER_FORMATRC_YAML
+} --ignore-path #{FormatTool::DOCKER_FORMAT_IGNORE} --write #{
+  FormatTool::DOCKER_INPUT_PATH
+}/**/*.{rb,rake}"
+```
