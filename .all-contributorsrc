@@ -315,6 +315,51 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ianks",
+      "name": "Ian Ker-Seymer",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3303032?v=4",
+      "profile": "http://ianks.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "flyerhzm",
+      "name": "Richard Huang",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/66836?v=4",
+      "profile": "https://huangzhimin.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "pje",
+      "name": "Patrick Ellis",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/319655?v=4",
+      "profile": "https://github.com/pje",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "masqita",
+      "name": "Peter De Berdt",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/161271?v=4",
+      "profile": "https://www.piesync.com/",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "hafley66",
+      "name": "Chris Hafley",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6750483?v=4",
+      "profile": "https://github.com/hafley66",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

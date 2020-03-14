@@ -59,4 +59,22 @@ describe.each(["while", "until"])("%s", keyword => {
           break :value
         end
     `)));
+
+  test("empty body", () => {
+    const content = ruby(`
+      while foo
+      end
+    `);
+
+    return expect(content).toChangeFormat("while foo; end");
+  });
+
+  test("empty body, long predicate", () => {
+    const content = ruby(`
+      while ${long}
+      end
+    `);
+
+    return expect(content).toMatchFormat();
+  });
 });

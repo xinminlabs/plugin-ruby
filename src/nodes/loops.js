@@ -3,10 +3,26 @@ const {
   concat,
   group,
   hardline,
+	ifBreak,
   indent,
+	softline,
 } = require("../prettier");
 
 const printLoop = (keyword) => (path, { inlineLoops }, print) => {
+  const [_predicate, statements] = path.getValue().body;
+
+  if (statements.body.length === 1 && statements.body[0].type === "void_stmt") {
+    return group(
+      concat([
+        keyword,
+        " ",
+        path.call(print, "body", 0),
+        ifBreak(softline, "; "),
+        "end"
+      ])
+    );
+	}
+
   const blockLoop = concat([
     concat([
       `${keyword} `,
