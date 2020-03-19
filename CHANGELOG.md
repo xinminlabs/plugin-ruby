@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- [@petevk], [@kddeisz] - Use braces for block format iff it was originally a brace block, otherwise you could be changing precedence. For example:
+
+<!-- prettier-ignore -->
+```ruby
+expect do
+  field 1 do
+    "foo"
+  end
+end.to raise_error
+```
+
+should maintain its `do...end` and not switch to inline braces otherwise the brace might get associated with the `1`.
+
+## [0.18.0] - 2020-03-17
+
 ### Added
 
 - [@kddeisz] - Support for the `nokw_param` node for specifying when methods should no accept keywords, as in:
@@ -91,6 +108,8 @@ end
 ```
 
 - [@hafley66], [@kddeisz] - Handle empty `while` and `until` blocks.
+- [@Fruetel], [@kddeisz] - Simplify string escape pattern by locking on any escape sequence.
+- [@flyerhzm], [@kddeisz] - Properly handle string quotes on symbols in hash keys.
 
 ## [0.17.0] - 2019-12-12
 
@@ -744,7 +763,8 @@ would previously result in `array[]`, but now prints properly.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-ruby/compare/v0.17.0...HEAD
+[unreleased]: https://github.com/prettier/plugin-ruby/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/prettier/plugin-ruby/compare/v0.17.0...v0.18.0
 [0.17.0]: https://github.com/prettier/plugin-ruby/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/prettier/plugin-ruby/compare/v0.15.1...v0.16.0
 [0.15.1]: https://github.com/prettier/plugin-ruby/compare/v0.15.0...v0.15.1
@@ -799,6 +819,7 @@ would previously result in `array[]`, but now prints properly.
 [@eins78]: https://github.com/eins78
 [@ftes]: https://github.com/ftes
 [@flyerhzm]: https://github.com/flyerhzm
+[@fruetel]: https://github.com/Fruetel
 [@gin0606]: https://github.com/gin0606
 [@github0013]: https://github.com/github0013
 [@glejeune]: https://github.com/glejeune
