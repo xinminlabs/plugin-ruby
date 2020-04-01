@@ -8,7 +8,6 @@ const {
   indent,
   softline
 } = require("../prettier");
-const { containsAssignment } = require("../utils");
 
 const printWithAddition = (keyword, path, print, { breaking = false } = {}) =>
   concat([
@@ -23,7 +22,7 @@ const printWithAddition = (keyword, path, print, { breaking = false } = {}) =>
 // For the unary `not` operator, we need to explicitly add parentheses to it in
 // order for it to be valid from within a ternary. Otherwise if the clause of
 // the ternary isn't a unary `not`, we can just pass it along.
-const printTernaryClause = clause => {
+const printTernaryClause = (clause) => {
   if (clause.type === "concat") {
     const [part] = clause.parts;
 
@@ -86,8 +85,6 @@ const makeSingleBlockForm = (keyword, path, print) =>
 // modifier form, we're guaranteed to not have an additional node, so we can
 // just work with the predicate and the body.
 const printSingle = keyword => (path, opts, print) => {
-  const [_predicate, stmts] = path.getValue().body;
-
   return concat([
     path.call(print, "body", 1),
     ` ${keyword} `,
@@ -96,8 +93,8 @@ const printSingle = keyword => (path, opts, print) => {
 };
 
 // A normalized print function for both `if` and `unless` nodes.
-const printConditional = keyword => (path, opts, print) => {
-  const [predicate, statements, addition] = path.getValue().body;
+const printConditional = (keyword) => (path, opts, print) => {
+  const [_predicate, statements, addition] = path.getValue().body;
 
   // If there's an additional clause that wasn't matched earlier, we know we
   // can't go for the inline option.

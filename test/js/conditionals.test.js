@@ -11,7 +11,7 @@ describe("conditionals", () => {
     });
   });
 
-  describe.each(["if", "unless"])("%s keyword", keyword => {
+  describe.each(["if", "unless"])("%s keyword", (keyword) => {
     test("inline stays", () => expect(`1 ${keyword} a`).toMatchFormat());
 
     test("multi line changes", () =>

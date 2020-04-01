@@ -8,7 +8,7 @@ const {
 	softline,
 } = require("../prettier");
 
-const printLoop = (keyword) => (path, { inlineLoops }, print) => {
+const printLoop = (keyword) => (path, opts, print) => {
   const [_predicate, statements] = path.getValue().body;
 
   if (statements.body.length === 1 && statements.body[0].type === "void_stmt") {
@@ -35,7 +35,7 @@ const printLoop = (keyword) => (path, { inlineLoops }, print) => {
   return blockLoop;
 };
 
-const printSingle = (keyword) => (path, { inlineLoops }, print) => {
+const printSingle = (keyword) => (path, opts, print) => {
   let inlineParts = [
     path.call(print, "body", 1),
     ` ${keyword} `,

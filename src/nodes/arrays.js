@@ -9,7 +9,7 @@ const {
   softline
 } = require("../prettier");
 
-const makeArray = start => (path, opts, print) =>
+const makeArray = (start) => (path, opts, print) =>
   [start].concat(path.map(print, "body"));
 
 const printAref = (path, opts, print) =>
@@ -22,7 +22,7 @@ const printAref = (path, opts, print) =>
     ])
   );
 
-const printSpecialArray = parts =>
+const printSpecialArray = (parts) =>
   group(
     concat([
       parts[0],
