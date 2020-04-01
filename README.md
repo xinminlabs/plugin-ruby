@@ -105,3 +105,17 @@ won't be transformed to
   FormatTool::DOCKER_INPUT_PATH
 }/**/*.{rb,rake}"
 ```
+
+### do not transform to string or symbol array
+
+```
+['foo']
+[:bar]
+```
+
+won't be transformed to
+
+```
+%w[foo]
+%i[bar]
+```
