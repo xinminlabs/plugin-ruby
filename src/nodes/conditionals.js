@@ -84,7 +84,7 @@ const makeSingleBlockForm = (keyword, path, print) =>
 // Prints an `if_mod` or `unless_mod` node. Because it was previously in the
 // modifier form, we're guaranteed to not have an additional node, so we can
 // just work with the predicate and the body.
-const printSingle = keyword => (path, opts, print) => {
+const printSingle = (keyword) => (path, opts, print) => {
   return concat([
     path.call(print, "body", 1),
     ` ${keyword} `,

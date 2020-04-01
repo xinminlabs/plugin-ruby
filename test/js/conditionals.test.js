@@ -94,8 +94,7 @@ describe("conditionals", () => {
               :value
             end
         `)
-      )
-    );
+      ));
   });
 
   describe("ternaries", () => {

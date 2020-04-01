@@ -5,7 +5,7 @@ const {
   indent,
   literalline,
   join,
-  printDocToString,
+  printDocToString
 } = require("../prettier");
 
 const { concatBody, empty, makeList, prefix, surround } = require("../utils");
@@ -122,8 +122,8 @@ module.exports = {
       Object.assign({}, opts, {
         printWidth: Infinity
       })
-    ).formatted
-    return "#{" +  string + "}";
+    ).formatted;
+    return "#{" + string + "}";
   },
   string_literal: (path, { preferSingleQuotes }, print) => {
     const stringLiteral = path.getValue();

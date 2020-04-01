@@ -3,9 +3,9 @@ const {
   concat,
   group,
   hardline,
-	ifBreak,
+  ifBreak,
   indent,
-	softline,
+  softline
 } = require("../prettier");
 
 const printLoop = (keyword) => (path, opts, print) => {
@@ -21,7 +21,7 @@ const printLoop = (keyword) => (path, opts, print) => {
         "end"
       ])
     );
-	}
+  }
 
   const blockLoop = concat([
     concat([

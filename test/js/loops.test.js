@@ -51,14 +51,14 @@ describe.each(["while", "until"])("%s", (keyword) => {
   });
 
   test("wraps single lines in parens when assigning", () =>
-    expect(
-      `hash[:key] = ${keyword} false do break :value end`
-    ).toChangeFormat(ruby(`
+    expect(`hash[:key] = ${keyword} false do break :value end`).toChangeFormat(
+      ruby(`
       hash[:key] =
         ${keyword} false
           break :value
         end
-    `)));
+    `)
+    ));
 
   test("empty body", () => {
     const content = ruby(`
