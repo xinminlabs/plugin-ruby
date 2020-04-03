@@ -119,3 +119,15 @@ won't be transformed to
 %w[foo]
 %i[bar]
 ```
+
+### do not transform regexp
+
+```
+/abc/
+```
+
+won't be transformed to
+
+```
+%r{abc}
+```
