@@ -9,13 +9,13 @@ It contains the following changes
 
 e.g.
 
-```
+```ruby
 hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello['test']
 ```
 
 won't be transformed to
 
-```
+```ruby
 hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello[
   'test'
 ]
@@ -25,7 +25,7 @@ hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello.foo.bar.hello[
 
 e.g.
 
-```
+```ruby
 if File.directory? entry
   Dir[File.join(entry, '**', "*.rb")]
 else
@@ -35,7 +35,7 @@ end
 
 won't be transformed to
 
-```
+```ruby
 File.directory? entry ? Dir[File.join(entry, '**', "*.rb")] : entry
 ```
 
@@ -43,7 +43,7 @@ File.directory? entry ? Dir[File.join(entry, '**', "*.rb")] : entry
 
 e.g.
 
-```
+```ruby
 if result
   'foo'
 else
@@ -53,7 +53,7 @@ end
 
 won't be transformed to
 
-```
+```ruby
 result ? 'foo' : 'bar'
 ```
 
@@ -61,7 +61,7 @@ result ? 'foo' : 'bar'
 
 e.g.
 
-```
+```ruby
 while true
   break :value
 end
@@ -69,7 +69,7 @@ end
 
 won't be transformed to
 
-```
+```ruby
 break :value while true
 ```
 
@@ -77,7 +77,7 @@ break :value while true
 
 e.g.
 
-```
+```ruby
 included do
   has_many :build_items, dependent: :destroy
 end
@@ -85,19 +85,19 @@ end
 
 won't be transformed to
 
-```
+```ruby
 included { has_many :build_items, dependent: :destroy }
 ```
 
 ### do not tranform string_embexpr
 
-```
+```ruby
 "node ./node_modules/prettier/bin-prettier.js --plugin ./node_modules/xinminlabs-plugin-ruby --config #{FormatTool::DOCKER_FORMATRC_YAML} --ignore-path #{FormatTool::DOCKER_FORMAT_IGNORE} --write #{FormatTool::DOCKER_INPUT_PATH}/**/*.{rb,rake}"
 ```
 
 won't be transformed to
 
-```
+```ruby
 "node ./node_modules/prettier/bin-prettier.js --plugin
 ./node_modules/xinminlabs-plugin-ruby --config #{
   FormatTool::DOCKER_FORMATRC_YAML
@@ -108,26 +108,26 @@ won't be transformed to
 
 ### do not transform to string or symbol array
 
-```
+```ruby
 ['foo']
 [:bar]
 ```
 
 won't be transformed to
 
-```
+```ruby
 %w[foo]
 %i[bar]
 ```
 
 ### do not transform regexp
 
-```
+```ruby
 /abc/
 ```
 
 won't be transformed to
 
-```
+```ruby
 %r{abc}
 ```
