@@ -8,8 +8,7 @@ const {
   softline
 } = require("../prettier");
 
-const toProc = require("../toProc");
-const { makeArgs } = require("../utils");
+const { makeList, makeArgs } = require("../utils");
 
 module.exports = {
   arg_paren: (path, opts, print) => {
@@ -54,39 +53,7 @@ module.exports = {
 
     return parenDoc;
   },
-  args: (path, opts, print) => {
-    const args = path.map(print, "body");
-    let blockNode = null;
-
-    // Look up the chain to see if these arguments are contained within a
-    // method_add_block node, and if they are that that node has a block
-    // associated with it. If it does, we're going to attempt to transform it
-    // into the to_proc shorthand and add it to the list of arguments.
-    [1, 2, 3].find((parent) => {
-      const parentNode = path.getParentNode(parent);
-      blockNode =
-        parentNode &&
-        parentNode.type === "method_add_block" &&
-        parentNode.body[1];
-
-      return blockNode;
-    });
-
-    const proc = blockNode && toProc(blockNode);
-
-    // If we have a successful to_proc transformation, but we're part of an aref
-    // node, that means it's something to the effect of
-    //
-    //     foo[:bar].each(&:to_s)
-    //
-    // In this case we need to just return regular arguments, otherwise we would
-    // end up putting &:to_s inside the brackets accidentally.
-    if (proc && path.getParentNode(1).type !== "aref") {
-      args.push(proc);
-    }
-
-    return args;
-  },
+  args: makeList,
   args_add_block: (path, opts, print) => {
     const parts = path.call(print, "body", 0);
 

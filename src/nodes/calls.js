@@ -1,5 +1,4 @@
 const { concat, group, indent, softline } = require("../prettier");
-const toProc = require("../toProc");
 const { concatBody, first, makeCall } = require("../utils");
 
 const noIndent = ["array", "hash", "if", "method_add_block", "xstring_literal"];
@@ -39,26 +38,6 @@ module.exports = {
 
     return concat([method, args]);
   },
-  method_add_block: (path, opts, print) => {
-    const [method, block] = path.getValue().body;
-    const proc = toProc(block);
-
-    if (proc && method.type === "call") {
-      return group(
-        concat([
-          path.call(print, "body", 0),
-          "(",
-          indent(concat([softline, proc])),
-          concat([softline, ")"])
-        ])
-      );
-    }
-
-    if (proc) {
-      return path.call(print, "body", 0);
-    }
-
-    return concat(path.map(print, "body"));
-  },
+  method_add_block: concatBody,
   vcall: first
 };

@@ -124,8 +124,7 @@ describe("blocks", () => {
   });
 
   describe("to_proc transform", () => {
-    test("basic inline", () =>
-      expect("loop { |i| i.to_s }").toChangeFormat("loop(&:to_s)"));
+    test("basic inline", () => expect("loop { |i| i.to_s }").toMatchFormat());
 
     test("basic multi-line", () => {
       const content = ruby(`
@@ -134,7 +133,7 @@ describe("blocks", () => {
         end
       `);
 
-      return expect(content).toChangeFormat("list.each(&:print)");
+      return expect(content).toMatchFormat();
     });
 
     test.skip("multi-line with comment", () => {
@@ -155,7 +154,7 @@ describe("blocks", () => {
         end
       `);
 
-      return expect(content).toChangeFormat("command 'foo', &:to_s");
+      return expect(content).toMatchFormat();
     });
 
     test("happens for command call nodes", () => {
@@ -165,11 +164,11 @@ describe("blocks", () => {
         end
       `);
 
-      return expect(content).toChangeFormat("command.call 'foo', &:to_s");
+      return expect(content).toMatchFormat();
     });
 
     test("with args and parens", () =>
-      expect("foo(bar) { |baz| baz.to_i }").toChangeFormat("foo(bar, &:to_i)"));
+      expect("foo(bar) { |baz| baz.to_i }").toMatchFormat());
 
     test("with commands", () => {
       const content = ruby(`
@@ -178,7 +177,7 @@ describe("blocks", () => {
         end
       `);
 
-      return expect(content).toChangeFormat("command bar, &:to_i");
+      return expect(content).toMatchFormat();
     });
 
     test("with command calls", () => {
@@ -188,7 +187,7 @@ describe("blocks", () => {
         end
       `);
 
-      return expect(content).toChangeFormat("command.call bar, &:to_i");
+      return expect(content).toMatchFormat();
     });
 
     test("does not happen when there are multiple lines", () => {
@@ -209,8 +208,6 @@ describe("blocks", () => {
       expect("loop { |i, j| i.to_s }").toMatchFormat());
 
     test("does not duplicate when inside of an aref node", () =>
-      expect("foo[:bar].each { |baz| baz.to_s }").toChangeFormat(
-        "foo[:bar].each(&:to_s)"
-      ));
+      expect("foo[:bar].each { |baz| baz.to_s }").toMatchFormat());
   });
 });
