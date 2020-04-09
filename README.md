@@ -131,3 +131,15 @@ won't be transformed to
 ```ruby
 %r{abc}
 ```
+
+### do not transform to to_proc
+
+```ruby
+array.each { |element| element.to_s }
+```
+
+won't be transformed to
+
+```ruby
+array.each(&:to_s)
+```

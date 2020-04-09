@@ -1,6 +1,6 @@
 {
   "name": "xinminlabs-plugin-ruby",
-  "version": "0.18.4",
+  "version": "0.18.5",
   "description": "prettier plugin for the Ruby programming language",
   "main": "src/ruby.js",
   "scripts": {
