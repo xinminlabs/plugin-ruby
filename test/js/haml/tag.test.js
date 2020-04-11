@@ -1,4 +1,4 @@
-const { ruby } = require("../utils");
+const { long, ruby } = require("../utils");
 
 describe("tag", () => {
   test("class", () => {
@@ -35,6 +35,12 @@ describe("tag", () => {
     expect(content).toMatchHamlFormat();
   });
 
+  test("dynamic attributes", () => {
+    const content = "%div{ data: { controller: 'lesson-evaluation' } }";
+
+    expect(content).toMatchHamlFormat();
+  });
+
   test("object reference", () => {
     const content = ruby(`
       %div[@user, :greeting]
@@ -43,5 +49,11 @@ describe("tag", () => {
     `);
 
     expect(content).toMatchHamlFormat();
+  });
+
+  test("long declaration before text", () => {
+    const declaration = `%button{ data: { current: ${long} } }`;
+
+    expect(`${declaration} foo`).toChangeHamlFormat(`${declaration}\n  foo`);
   });
 });

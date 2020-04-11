@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.18.1] - 2020-04-05
+
 ### Changed
 
 - [@petevk], [@kddeisz] - Use braces for block format iff it was originally a brace block, otherwise you could be changing precedence. For example:
@@ -30,6 +32,25 @@ should maintain its `do...end` and not switch to inline braces otherwise the bra
   222
 ] +
   [1]
+```
+
+- [@ftes], [@kddeisz] - When old-form dynamic attributes are added to a `div` tag in HAML, it was previously skipping printing the `%div`, which led to it being incorrectly displayed.
+- [@ftes], [@kddeisz] - Previously if you had a long tag declaration with attributes that made it hit the line limit, then the content of the tag would be pushed to the next line but indented one character too many.
+- [@ftes], [@kddeisz] - Don't explicitly require JSON if it has already been loaed, as this can lead to rubygems activation errors.
+- [@mmainz], [@kddeisz] - Handle heredocs as the receivers of call nodes, as in:
+
+<!-- prettier-ignore -->
+```ruby
+foo = <<~TEXT.strip
+  bar
+TEXT
+```
+
+- [@github0013], [@kddeisz] - Leave parentheses in place if the value of a return node contains a binary with low operator precedence, as in:
+
+<!-- prettier-ignore -->
+```ruby
+return (a or b) if c?
 ```
 
 ## [0.18.0] - 2020-03-17
@@ -698,7 +719,7 @@ would previously result in `array[]`, but now prints properly.
 
 - [@kddeisz] - Don't define duplicated methods in the parser.
 - [@kddeisz] - Let prettier know about `.rb` and `.rake` files so you don't have to specify the parser when running.
-- [@kddeisz] - Renamed the package to [@prettier]/plugin-ruby.
+- [@kddeisz] - Renamed the package to @prettier/plugin-ruby.
 
 ## [0.3.1] - 2019-02-07
 
@@ -774,7 +795,8 @@ would previously result in `array[]`, but now prints properly.
 
 - Initial release 🎉
 
-[unreleased]: https://github.com/prettier/plugin-ruby/compare/v0.18.0...HEAD
+[unreleased]: https://github.com/prettier/plugin-ruby/compare/v0.18.1...HEAD
+[0.18.1]: https://github.com/prettier/plugin-ruby/compare/v0.18.0...v0.18.1
 [0.18.0]: https://github.com/prettier/plugin-ruby/compare/v0.17.0...v0.18.0
 [0.17.0]: https://github.com/prettier/plugin-ruby/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/prettier/plugin-ruby/compare/v0.15.1...v0.16.0
@@ -849,6 +871,7 @@ would previously result in `array[]`, but now prints properly.
 [@krachtstefan]: https://github.com/krachtstefan
 [@localhostdotdev]: https://github.com/localhostdotdev
 [@marcmaniez]: https://github.com/MarcManiez
+[@masqita]: https://github.com/masqita
 [@matt-wratt]: https://github.com/matt-wratt
 [@meleyal]: https://github.com/meleyal
 [@mmainz]: https://github.com/mmainz
