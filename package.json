@@ -1,6 +1,6 @@
 {
   "name": "awesomecode-plugin-ruby",
-  "version": "0.18.5",
+  "version": "0.18.6",
   "description": "prettier plugin for the Ruby programming language",
   "main": "src/ruby.js",
   "scripts": {
