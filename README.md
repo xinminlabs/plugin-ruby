@@ -1,4 +1,4 @@
-# xinminlabs-plugin-ruby
+# awesomecode-plugin-ruby
 
 This is a fork of prettier [plugin-ruby](https://github.com/prettier/plugin-ruby),
 which is used in [Awesome Code](https://awesomecode.io)
@@ -92,14 +92,14 @@ included { has_many :build_items, dependent: :destroy }
 ### do not tranform string_embexpr
 
 ```ruby
-"node ./node_modules/prettier/bin-prettier.js --plugin ./node_modules/xinminlabs-plugin-ruby --config #{FormatTool::DOCKER_FORMATRC_YAML} --ignore-path #{FormatTool::DOCKER_FORMAT_IGNORE} --write #{FormatTool::DOCKER_INPUT_PATH}/**/*.{rb,rake}"
+"node ./node_modules/prettier/bin-prettier.js --plugin ./node_modules/awesomecode-plugin-ruby --config #{FormatTool::DOCKER_FORMATRC_YAML} --ignore-path #{FormatTool::DOCKER_FORMAT_IGNORE} --write #{FormatTool::DOCKER_INPUT_PATH}/**/*.{rb,rake}"
 ```
 
 won't be transformed to
 
 ```ruby
 "node ./node_modules/prettier/bin-prettier.js --plugin
-./node_modules/xinminlabs-plugin-ruby --config #{
+./node_modules/awesomecode-plugin-ruby --config #{
   FormatTool::DOCKER_FORMATRC_YAML
 } --ignore-path #{FormatTool::DOCKER_FORMAT_IGNORE} --write #{
   FormatTool::DOCKER_INPUT_PATH

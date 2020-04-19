@@ -1,5 +1,5 @@
 {
-  "name": "xinminlabs-plugin-ruby",
+  "name": "awesomecode-plugin-ruby",
   "version": "0.18.5",
   "description": "prettier plugin for the Ruby programming language",
   "main": "src/ruby.js",
@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/xinminlabs/plugin-ruby/issues"
   },
-  "homepage": "https://github.com/xinminlabs/plugin-ruby/tree/xinminlabs-plugin-ruby#readme",
+  "homepage": "https://github.com/xinminlabs/plugin-ruby#readme",
   "dependencies": {
     "prettier": ">=1.10"
   },
