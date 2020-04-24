@@ -143,3 +143,17 @@ won't be transformed to
 ```ruby
 array.each(&:to_s)
 ```
+
+### do not wrap line inside arg_paren for some cases
+
+```ruby
+thereisamethodcall(arg1, arg2).thereisanothermethodcall(arg1, arg2).asimpleone(arg)
+```
+
+won't be transformed to
+
+```ruby
+thereisamethodcall(arg1, arg2).thereisanothermethodcall(arg1, arg2).asimpleone(
+  arg
+)
+```
