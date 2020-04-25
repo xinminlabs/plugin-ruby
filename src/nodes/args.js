@@ -8,11 +8,11 @@ const {
   softline
 } = require("../prettier");
 
-const { makeList, makeArgs } = require("../utils");
+const { docLength, makeList, makeArgs } = require("../utils");
 
+const MAX_NOT_WRAP_ARGS_LENGTH = 10;
 const shouldNotWrapLine = (args) =>
-  args.length === 0 ||
-  (args.length === 1 && typeof args[0] === "string" && args[0].length < 10);
+  args.reduce((sum, arg) => sum + docLength(arg), 0) < MAX_NOT_WRAP_ARGS_LENGTH;
 
 module.exports = {
   arg_paren: (path, opts, print) => {
