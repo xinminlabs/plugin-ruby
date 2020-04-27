@@ -78,19 +78,6 @@ describe("blocks", () => {
     );
   });
 
-  // from ruby test/ruby/test_call.rb
-  test("inline do end", () =>
-    expect(`assert_nil(("a".sub! "b" do end&.foo {}))`).toChangeFormat(
-      ruby(`
-      assert_nil(
-        (
-          'a'.sub! 'b' do
-          end&.foo {}
-        )
-      )
-    `)
-    ));
-
   test("excessed_comma nodes", () => expect("proc { |x,| }").toMatchFormat());
 
   describe("args", () => {
