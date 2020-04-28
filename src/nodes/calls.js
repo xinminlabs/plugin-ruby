@@ -27,7 +27,7 @@ module.exports = {
     // You can call lambdas with a special syntax that looks like func.(*args).
     // In this case, "call" is returned for the 3rd child node.
     const printedMessage =
-      messageNode === "call" ? messageNode : path.call(print, "body", 2);
+      messageNode === "call" ? '' : path.call(print, "body", 2);
 
     // If we have a heredoc as a receiver, then we need to move the operator and
     // the message up to start of the heredoc declaration, as in:

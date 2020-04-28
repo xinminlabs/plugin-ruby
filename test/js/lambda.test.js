@@ -72,7 +72,7 @@ describe("lambda", () => {
   });
 
   test("no explicit call adds call", () =>
-    expect("a.(1, 2, 3)").toChangeFormat("a.call(1, 2, 3)"));
+    expect("a.(1, 2, 3)").toMatchFormat());
 
   test("calls maintains call", () => expect("a.call(1, 2, 3)").toMatchFormat());
 
