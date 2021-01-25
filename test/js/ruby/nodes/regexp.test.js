@@ -3,13 +3,13 @@ const { ruby } = require("../../utils");
 describe("regexp", () => {
   test("basic", () => expect("/abc/").toMatchFormat());
 
-  test("unnecessary braces", () => expect("%r{abc}").toChangeFormat("/abc/"));
+  test("unnecessary braces", () => expect("%r{abc}").toMatchFormat());
 
-  test("unnecessary slashes", () => expect("%r/abc/").toChangeFormat("/abc/"));
+  test("unnecessary slashes", () => expect("%r/abc/").toMatchFormat());
 
-  test("unnecessary brackets", () => expect("%r[abc]").toChangeFormat("/abc/"));
+  test("unnecessary brackets", () => expect("%r[abc]").toMatchFormat());
 
-  test("unnecessary parens", () => expect("%r(abc)").toChangeFormat("/abc/"));
+  test("unnecessary parens", () => expect("%r(abc)").toMatchFormat());
 
   test("necessary braces", () => expect("%r{a/b/c}").toMatchFormat());
 
@@ -19,7 +19,7 @@ describe("regexp", () => {
 
   test("braces and modifiers", () => expect("%r{a/b/c}mi").toMatchFormat());
 
-  test("global interpolation", () => expect("/#$&/").toChangeFormat("/#{$&}/"));
+  test("global interpolation", () => expect("/#$&/").toMatchFormat());
 
   test("do not change if { and / in regexp literal", () =>
     expect("%r(a{b/c)").toMatchFormat());
@@ -27,7 +27,7 @@ describe("regexp", () => {
   test("do not change if } and / in regexp literal", () =>
     expect("%r[a}b/c]").toMatchFormat());
 
-  test("parens with }", () => expect("%r(a}bc)").toChangeFormat("/a}bc/"));
+  test("parens with }", () => expect("%r(a}bc)").toMatchFormat());
 
   test("comments in regex", () => {
     const content = ruby(`

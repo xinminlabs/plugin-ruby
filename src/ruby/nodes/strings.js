@@ -100,7 +100,7 @@ function printStringConcat(path, opts, print) {
 // Prints out an interpolated variable in the string by converting it into an
 // embedded expression.
 function printStringDVar(path, opts, print) {
-  return concat(["#{", path.call(print, "body", 0), "}"]);
+  return concat(["#", path.call(print, "body", 0)]);
 }
 
 function printStringEmbExpr(path, opts, print) {
