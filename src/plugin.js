@@ -98,13 +98,6 @@ module.exports = {
     haml: hamlPrinter
   },
   options: {
-    rubyModifier: {
-      type: "boolean",
-      category: "Ruby",
-      default: true,
-      description:
-        "When it fits on one line, allows if, unless, while, and until statements to use the modifier form."
-    },
     rubySingleQuote: {
       type: "boolean",
       category: "Ruby",

@@ -14,7 +14,7 @@ const { containsAssignment, isEmptyStmts } = require("../../utils");
 const inlineEnsureParens = require("../../utils/inlineEnsureParens");
 
 function printLoop(keyword, modifier) {
-  return function printLoopWithOptions(path, { rubyModifier }, print) {
+  return function printLoopWithOptions(path, opts, print) {
     const [_predicate, stmts] = path.getValue().body;
 
     // If the only statement inside this while loop is a void statement, then we
@@ -47,7 +47,7 @@ function printLoop(keyword, modifier) {
     //
     // The above is effectively a `do...while` loop (which we don't have in
     // ruby).
-    if (modifier && path.getValue().body[1].type === "begin") {
+    if (modifier) {
       return inlineLoop;
     }
 
@@ -64,7 +64,7 @@ function printLoop(keyword, modifier) {
     // contains an assignment (in which case we can't know for certain that that
     // assignment doesn't impact the statements inside the loop) then we can't
     // use the modifier form and we must use the block form.
-    if (!rubyModifier || containsAssignment(path.getValue().body[0])) {
+    if (!modifier || containsAssignment(path.getValue().body[0])) {
       return concat([breakParent, blockLoop]);
     }
 
