@@ -9,7 +9,7 @@ const {
   softline
 } = require("../../prettier");
 
-const { containsAssignment, isEmptyStmts } = require("../../utils");
+const { isEmptyStmts } = require("../../utils");
 const inlineEnsureParens = require("../../utils/inlineEnsureParens");
 
 const printWithAddition = (keyword, path, print, { breaking = false } = {}) =>
@@ -80,9 +80,8 @@ const printTernary = (path, _opts, print) => {
 // Prints an `if_mod` or `unless_mod` node. Because it was previously in the
 // modifier form, we're guaranteed to not have an additional node, so we can
 // just work with the predicate and the body.
-function printSingle(keyword, modifier = false) {
-  return function printSingleWithKeyword(path, { rubyModifier }, print) {
-    const [_predicateNode, statementsNode] = path.getValue().body;
+function printSingle(keyword) {
+  return function printSingleWithKeyword(path, opts, print) {
     const predicateDoc = path.call(print, "body", 0);
     const statementsDoc = path.call(print, "body", 1);
 
@@ -94,13 +93,6 @@ function printSingle(keyword, modifier = false) {
       "end"
     ];
 
-    // If we do not allow modifier form conditionals or there are comments
-    // inside of the body of the conditional, then we must print in the
-    // multiline form.
-    if (!rubyModifier || (!modifier && statementsNode.body[0].comments)) {
-      return concat([concat(multilineParts), breakParent]);
-    }
-
     const inline = concat(
       inlineEnsureParens(path, [
         path.call(print, "body", 1),
@@ -109,107 +101,13 @@ function printSingle(keyword, modifier = false) {
       ])
     );
 
-    // An expression with a conditional modifier (expression if true), the
-    // conditional body is parsed before the predicate expression, meaning that
-    // if the parser encountered a variable declaration, it would initialize
-    // that variable first before evaluating the predicate expression. That
-    // parse order means the difference between a NameError or not. #591
-    // https://docs.ruby-lang.org/en/2.0.0/syntax/control_expressions_rdoc.html#label-Modifier+if+and+unless
-    if (modifier && containsAssignment(statementsNode)) {
-      return inline;
-    }
-
     return group(ifBreak(concat(multilineParts), inline));
   };
 }
 
-const noTernary = [
-  "alias",
-  "assign",
-  "break",
-  "command",
-  "command_call",
-  "if_mod",
-  "ifop",
-  "lambda",
-  "massign",
-  "next",
-  "opassign",
-  "rescue_mod",
-  "return",
-  "return0",
-  "super",
-  "undef",
-  "unless_mod",
-  "until_mod",
-  "var_alias",
-  "void_stmt",
-  "while_mod",
-  "yield",
-  "yield0",
-  "zsuper"
-];
-
-// Certain expressions cannot be reduced to a ternary without adding parens
-// around them. In this case we say they cannot be ternaried and default instead
-// to breaking them into multiple lines.
-const canTernaryStmts = (stmts) => {
-  if (stmts.body.length !== 1) {
-    return false;
-  }
-
-  const stmt = stmts.body[0];
-
-  // If the user is using one of the lower precedence "and" or "or" operators,
-  // then we can't use a ternary expression as it would break the flow control.
-  if (stmt.type === "binary" && ["and", "or"].includes(stmt.body[1])) {
-    return false;
-  }
-
-  // Check against the blocklist of statement types that are not allowed to be
-  // a part of a ternary expression.
-  return !noTernary.includes(stmt.type);
-};
-
-// In order for an `if` or `unless` expression to be shortened to a ternary,
-// there has to be one and only one "addition" (another clause attached) which
-// is of the "else" type. Both the body of the main node and the body of the
-// additional node must have only one statement, and that statement list must
-// pass the `canTernaryStmts` check.
-const canTernary = (path) => {
-  const [predicate, stmts, addition] = path.getValue().body;
-
-  return (
-    !["assign", "opassign", "command_call", "command"].includes(
-      predicate.type
-    ) &&
-    addition &&
-    addition.type === "else" &&
-    [stmts, addition.body[0]].every(canTernaryStmts)
-  );
-};
-
 // A normalized print function for both `if` and `unless` nodes.
-const printConditional = (keyword) => (path, { rubyModifier }, print) => {
-  if (canTernary(path)) {
-    let ternaryParts = [path.call(print, "body", 0), " ? "].concat(
-      printTernaryClauses(
-        keyword,
-        path.call(print, "body", 1),
-        path.call(print, "body", 2, "body", 0)
-      )
-    );
-
-    if (["binary", "call"].includes(path.getParentNode().type)) {
-      ternaryParts = ["("].concat(ternaryParts).concat(")");
-    }
-
-    return group(
-      ifBreak(printWithAddition(keyword, path, print), concat(ternaryParts))
-    );
-  }
-
-  const [predicate, statements, addition] = path.getValue().body;
+const printConditional = (keyword) => (path, opts, print) => {
+  const [_predicate, statements, addition] = path.getValue().body;
 
   // If there's an additional clause that wasn't matched earlier, we know we
   // can't go for the inline option.
@@ -230,16 +128,12 @@ const printConditional = (keyword) => (path, { rubyModifier }, print) => {
   // If the predicate of the conditional contains an assignment, then we can't
   // know for sure that it doesn't impact the body of the conditional, so we
   // have to default to the block form.
-  if (containsAssignment(predicate)) {
-    return concat([
-      `${keyword} `,
-      align(keyword.length + 1, path.call(print, "body", 0)),
-      indent(concat([hardline, path.call(print, "body", 1)])),
-      concat([hardline, "end"])
-    ]);
-  }
-
-  return printSingle(keyword)(path, { rubyModifier }, print);
+  return concat([
+    `${keyword} `,
+    align(keyword.length + 1, path.call(print, "body", 0)),
+    indent(concat([hardline, path.call(print, "body", 1)])),
+    concat([hardline, "end"])
+  ]);
 };
 
 module.exports = {
@@ -274,7 +168,7 @@ module.exports = {
   },
   if: printConditional("if"),
   ifop: printTernary,
-  if_mod: printSingle("if", true),
+  if_mod: printSingle("if"),
   unless: printConditional("unless"),
-  unless_mod: printSingle("unless", true)
+  unless_mod: printSingle("unless")
 };
