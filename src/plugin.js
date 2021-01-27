@@ -125,13 +125,6 @@ module.exports = {
       default: true,
       description:
         "When double quotes are not necessary for interpolation, prefers the use of single quotes for string literals."
-    },
-    rubyToProc: {
-      type: "boolean",
-      category: "Ruby",
-      default: false,
-      description:
-        "When possible, convert blocks to the more concise Symbol#to_proc syntax."
     }
   },
   defaultOptions: {

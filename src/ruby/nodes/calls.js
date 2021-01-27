@@ -8,8 +8,6 @@ const {
 } = require("../../prettier");
 const { makeCall, noIndent } = require("../../utils");
 
-const toProc = require("../toProc");
-
 const chained = ["call", "method_add_arg", "method_add_block"];
 
 function printCall(path, opts, print) {
@@ -139,29 +137,7 @@ function printMethodAddArg(path, opts, print) {
 function printMethodAddBlock(path, opts, print) {
   const node = path.getValue();
 
-  const [callNode, blockNode] = node.body;
   const [callDoc, blockDoc] = path.map(print, "body");
-
-  // Don't bother trying to do any kind of fancy toProc transform if the option
-  // is disabled.
-  if (opts.rubyToProc) {
-    const proc = toProc(path, blockNode);
-
-    if (proc && callNode.type === "call") {
-      return group(
-        concat([
-          path.call(print, "body", 0),
-          "(",
-          indent(concat([softline, proc])),
-          concat([softline, ")"])
-        ])
-      );
-    }
-
-    if (proc) {
-      return path.call(print, "body", 0);
-    }
-  }
 
   // Get a reference to the parent node so we can check if we're inside a chain
   const parentNode = path.getParentNode();
