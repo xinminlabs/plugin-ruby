@@ -61,19 +61,16 @@ describe("tag", () => {
 
   test("static attributes (hash rocket, single quote)", () => {
     const content = haml(`%section(xml:lang="en" title="title")`);
-    const expected = `%section{:'xml:lang' => 'en', :title => 'title'}`;
+    const expected = `%section{'xml:lang': 'en', title: 'title'}`;
 
-    return expect(content).toChangeFormat(expected, { rubyHashLabel: false });
+    return expect(content).toChangeFormat(expected);
   });
 
   test("static attributes (hash rocket, double quote)", () => {
     const content = haml(`%section(xml:lang="en" title="title")`);
-    const expected = '%section{:"xml:lang" => "en", :title => "title"}';
+    const expected = '%section{"xml:lang": "en", title: "title"}';
 
-    return expect(content).toChangeFormat(expected, {
-      rubyHashLabel: false,
-      rubySingleQuote: false
-    });
+    return expect(content).toChangeFormat(expected, { rubySingleQuote: false });
   });
 
   test("static attributes (non-strings)", () => {

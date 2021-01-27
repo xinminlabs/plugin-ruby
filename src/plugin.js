@@ -98,13 +98,6 @@ module.exports = {
     haml: hamlPrinter
   },
   options: {
-    rubyHashLabel: {
-      type: "boolean",
-      category: "Ruby",
-      default: true,
-      description:
-        "When possible, uses the shortened hash key syntax, as opposed to hash rockets."
-    },
     rubyModifier: {
       type: "boolean",
       category: "Ruby",

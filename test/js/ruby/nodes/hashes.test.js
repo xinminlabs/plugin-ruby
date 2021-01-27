@@ -105,10 +105,10 @@ describe("hash", () => {
       expect(`{ "#{1 + 1}": 2 }`).toMatchFormat());
 
     test("basic without hash labels", () =>
-      expect(`{ :'foo' => 'bar' }`).toMatchFormat({ rubyHashLabel: false }));
+      expect(`{ :'foo' => 'bar' }`).toChangeFormat(`{ 'foo': 'bar' }`));
 
     test("with interpolation without hash labels", () =>
-      expect(`{ :"#{1 + 1}" => 2 }`).toMatchFormat({ rubyHashLabel: false }));
+      expect(`{ :"#{1 + 1}" => 2 }`).toChangeFormat(`{ "#{1 + 1}": 2 }`));
   });
 
   describe("bare assoc hash", () => {
@@ -197,36 +197,25 @@ describe("hash", () => {
   describe("when hash labels disallowed", () => {
     test("hash labels get replaced", () =>
       expect("{ a: 'a', b: 'b', c: 'c' }").toChangeFormat(
-        "{ :a => 'a', :b => 'b', :c => 'c' }",
-        {
-          rubyHashLabel: false
-        }
+        "{ a: 'a', b: 'b', c: 'c' }"
       ));
 
     test("hash rockets stay", () =>
-      expect("{ :a => 'a', :b => 'b', :c => 'c' }").toMatchFormat({
-        rubyHashLabel: false
-      }));
+      expect("{ :a => 'a', :b => 'b', :c => 'c' }").toChangeFormat(
+        "{ a: 'a', b: 'b', c: 'c' }"
+      ));
 
     test("hash rockets stay when needed", () =>
-      expect("{ Foo => 1, Bar => 2 }").toMatchFormat({
-        rubyHashLabel: false
-      }));
+      expect("{ Foo => 1, Bar => 2 }").toMatchFormat());
 
     test("ending in equals stays", () =>
-      expect("{ :foo= => 'bar' }").toMatchFormat({
-        rubyHashLabel: false
-      }));
+      expect("{ :foo= => 'bar' }").toMatchFormat());
 
     test("starting with non-letter/non-underscore stays", () =>
-      expect("{ :@foo => 'bar' }").toMatchFormat({
-        rubyHashLabel: false
-      }));
+      expect("{ :@foo => 'bar' }").toMatchFormat());
 
     test("starting with underscore stays", () =>
-      expect("{ :_foo => 'bar' }").toMatchFormat({
-        rubyHashLabel: false
-      }));
+      expect("{ :_foo => 'bar' }").toChangeFormat("{ _foo: 'bar' }"));
   });
 
   test("prints hashes with consistent keys", () =>

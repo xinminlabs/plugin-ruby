@@ -115,10 +115,9 @@ function printHashContents(path, opts, print) {
 
   // First determine which key printer we're going to use, so that the child
   // nodes can reference it when they go to get printed.
-  node.keyPrinter =
-    opts.rubyHashLabel && canUseHashLabels(path.getValue())
-      ? printHashKeyLabel
-      : printHashKeyRocket;
+  node.keyPrinter = canUseHashLabels(path.getValue())
+    ? printHashKeyLabel
+    : printHashKeyRocket;
 
   return join(concat([",", line]), path.map(print, "body"));
 }

@@ -40,16 +40,20 @@ function getHashValue(value, opts) {
   return `${quote}${value}${quote}`;
 }
 
+function isValidHashLabel(key) {
+  return key.match(/^[_A-Za-z]/) && !key.endsWith("=");
+}
+
 function getHashKey(key, opts) {
   let quoted = key;
-  const joiner = opts.rubyHashLabel ? ":" : " =>";
+  const joiner = isValidHashLabel(key) ? ":" : " =>";
 
   if (key.includes(":") || key.includes("-")) {
     const quote = opts.rubySingleQuote ? "'" : '"';
     quoted = `${quote}${key}${quote}`;
   }
 
-  return `${opts.rubyHashLabel ? "" : ":"}${quoted}${joiner}`;
+  return `${isValidHashLabel(key) ? "" : ":"}${quoted}${joiner}`;
 }
 
 function getKeyValuePair(key, value, opts) {
