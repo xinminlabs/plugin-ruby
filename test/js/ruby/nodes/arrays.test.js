@@ -12,7 +12,7 @@ describe("array", () => {
     expect("[:a]").toMatchFormat());
 
   test("transforms basic string arrays", () =>
-    expect("['a', 'b', 'c', 'd', 'e']").toChangeFormat("%w[a b c d e]"));
+    expect("['a', 'b', 'c', 'd', 'e']").toMatchFormat());
 
   test("does not transform string arrays with interpolation", () =>
     expect(`['a', "#{b}", 'c']`).toMatchFormat());
@@ -36,13 +36,13 @@ describe("array", () => {
     expect(`['a [] b', 'c [] d']`).toMatchFormat());
 
   test("does not transform string arrays if disabled", () =>
-    expect(`['a', 'b']`).toMatchFormat({ rubyArrayLiteral: false }));
+    expect(`['a', 'b']`).toMatchFormat());
 
   test("does not transform symbol arrays if disabled", () =>
-    expect("[:a, :b]").toMatchFormat({ rubyArrayLiteral: false }));
+    expect("[:a, :b]").toMatchFormat());
 
   test("transforms basic symbol arrays", () =>
-    expect("[:a, :b, :c]").toChangeFormat("%i[a b c]"));
+    expect("[:a, :b, :c]").toMatchFormat());
 
   test("does not transform symbol arrays with dynamic symbols", () =>
     expect("[:'a + b']").toMatchFormat());

@@ -98,13 +98,6 @@ module.exports = {
     haml: hamlPrinter
   },
   options: {
-    rubyArrayLiteral: {
-      type: "boolean",
-      category: "Ruby",
-      default: true,
-      description:
-        "When possible, favor the use of string and symbol array literals."
-    },
     rubyHashLabel: {
       type: "boolean",
       category: "Ruby",

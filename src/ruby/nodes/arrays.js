@@ -9,57 +9,6 @@ const {
 } = require("../../prettier");
 const { getTrailingComma, printEmptyCollection } = require("../../utils");
 
-// Checks that every argument within this args node is a string_literal node
-// that has no spaces or interpolations. This means we're dealing with an array
-// that looks something like:
-//
-//     ['a', 'b', 'c']
-//
-function isStringArray(args) {
-  return (
-    args.body.length > 1 &&
-    args.body.every((arg) => {
-      // We want to verify that every node inside of this array is a string
-      // literal. We also want to make sure none of them have comments attached.
-      if (arg.type !== "string_literal" || arg.comments) {
-        return false;
-      }
-
-      // If the string has multiple parts (meaning plain string content but also
-      // interpolated content) then we know it's not a simple string.
-      if (arg.body.length !== 1) {
-        return false;
-      }
-
-      const part = arg.body[0];
-
-      // If the only part of this string is not @tstring_content then it's
-      // interpolated, so again we can return false.
-      if (part.type !== "@tstring_content") {
-        return false;
-      }
-
-      // Finally, verify that the string doesn't contain a space, an escape
-      // character, or brackets so that we know it can be put into a string
-      // literal array.
-      return !/[\s\\[\]]/.test(part.body);
-    })
-  );
-}
-
-// Checks that every argument within this args node is a symbol_literal node (as
-// opposed to a dyna_symbol) so it has no interpolation. This means we're
-// dealing with an array that looks something like:
-//
-//     [:a, :b, :c]
-//
-function isSymbolArray(args) {
-  return (
-    args.body.length > 1 &&
-    args.body.every((arg) => arg.type === "symbol_literal" && !arg.comments)
-  );
-}
-
 // Prints out a word that is a part of a special array literal that accepts
 // interpolation. The body is an array of either plain strings or interpolated
 // expressions.
@@ -103,24 +52,6 @@ function printArray(path, opts, print) {
   // array, so we can go ahead and return.
   if (args === null) {
     return printEmptyCollection(path, opts, "[", "]");
-  }
-
-  // If we have an array that contains only simple string literals with no
-  // spaces or interpolation, then we're going to print a %w array.
-  if (opts.rubyArrayLiteral && isStringArray(args)) {
-    const printString = (stringPath) => stringPath.call(print, "body", 0);
-    const parts = path.map(printString, "body", 0, "body");
-
-    return printSpecialArrayParts(["%w"].concat(parts));
-  }
-
-  // If we have an array that contains only simple symbol literals with no
-  // interpolation, then we're going to print a %i array.
-  if (opts.rubyArrayLiteral && isSymbolArray(args)) {
-    const printSymbol = (symbolPath) => symbolPath.call(print, "body", 0);
-    const parts = path.map(printSymbol, "body", 0, "body");
-
-    return printSpecialArrayParts(["%i"].concat(parts));
   }
 
   // If we don't have a regular args node at this point then we have a special
