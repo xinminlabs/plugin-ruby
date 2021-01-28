@@ -325,13 +325,7 @@ describe("heredocs", () => {
       end
     `);
 
-    const expected = ruby(`
-      call(1, 2, 3, <<-HERE) { puts 'more code' }
-        foo
-      HERE
-    `);
-
-    return expect(content).toChangeFormat(expected);
+    return expect(content).toMatchFormat();
   });
 
   test("on calls with trailing arguments", () => {

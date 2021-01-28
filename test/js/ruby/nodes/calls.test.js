@@ -52,7 +52,9 @@ describe("calls", () => {
         .bbb
         .ccc
         .ddd
-        .eee { ${block} }
+        .eee do
+          ${block}
+        end
     `);
 
     return expect(content).toChangeFormat(expected);

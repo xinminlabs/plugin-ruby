@@ -177,6 +177,16 @@ describe("conditionals", () => {
             end
         `)
         ));
+
+      test("wraps inline version with calls", () => {
+        const content = ruby(`
+          if true
+            false
+          end.to_s
+        `);
+
+        return expect(content).toMatchFormat();
+      });
     });
   });
 
