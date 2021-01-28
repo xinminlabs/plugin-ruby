@@ -8,7 +8,6 @@ const {
   removeLines,
   softline
 } = require("../../prettier");
-const { hasAncestor } = require("../../utils");
 
 function printBlockVar(path, opts, print) {
   const parts = ["|", removeLines(path.call(print, "body", 0))];
@@ -37,18 +36,11 @@ function printBlock(braces) {
       doBlockBody = indent(concat([softline, path.call(print, "body", 1)]));
     }
 
-    // If this block is nested underneath a command or command_call node, then
-    // we can't use `do...end` because that will get associated with the parent
-    // node as opposed to the current node (because of the difference in
-    // operator precedence). Instead, we still use a multi-line format but
-    // switch to using braces instead.
-    const useBraces = braces && hasAncestor(path, ["command", "command_call"]);
-
     const doBlock = concat([
-      useBraces ? " {" : " do",
+      braces ? " {" : " do",
       variables ? concat([" ", path.call(print, "body", 0)]) : "",
       doBlockBody,
-      concat([softline, useBraces ? "}" : "end"])
+      concat([softline, braces ? "}" : "end"])
     ]);
 
     // We can hit this next pattern if within the block the only statement is a
@@ -79,7 +71,11 @@ function printBlock(braces) {
       "}"
     ]);
 
-    return group(ifBreak(doBlock, braceBlock));
+    if (braces) {
+      return group(ifBreak(doBlock, braceBlock));
+    } else {
+      return doBlock;
+    }
   };
 }
 
