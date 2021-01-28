@@ -1,5 +1,5 @@
 {
-  "name": "@prettier/plugin-ruby",
+  "name": "awesomecode-plugin-ruby",
   "version": "1.5.1",
   "description": "prettier plugin for the Ruby programming language",
   "main": "src/plugin.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prettier/plugin-ruby.git"
+    "url": "git+https://github.com/xinminlabs/plugin-ruby.git"
   },
-  "author": "Kevin Deisz",
+  "author": "Richard Huang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/prettier/plugin-ruby/issues"
+    "url": "https://github.com/xinminlabs/plugin-ruby/issues"
   },
-  "homepage": "https://github.com/prettier/plugin-ruby#readme",
+  "homepage": "https://github.com/xinminlabs/plugin-ruby#readme",
   "dependencies": {
     "prettier": ">=1.10"
   },
