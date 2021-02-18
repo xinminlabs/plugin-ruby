@@ -21,6 +21,18 @@ It removes the following configurations
 
 It contains the following changes
 
+### do not add line break for array index
+
+```ruby
+longarrayname[index]
+```
+
+won't be transformed to
+
+```ruby
+longarrayname[index]
+```
+
 ### do not transform regexp
 
 ```ruby
