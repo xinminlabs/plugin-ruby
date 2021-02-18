@@ -1,4 +1,4 @@
-const { ruby } = require("../../utils");
+const { long, ruby } = require("../../utils");
 
 describe("aref", () => {
   test("literal reference", () => expect("array[5]").toMatchFormat());
@@ -23,4 +23,6 @@ describe("aref", () => {
 
     return expect(contents).toMatchFormat();
   });
+
+  test("long reference", () => expect(`${long}[idx]`).toMatchFormat());
 });

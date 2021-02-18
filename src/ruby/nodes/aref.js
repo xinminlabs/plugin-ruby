@@ -50,8 +50,8 @@ function printArefField(path, opts, print) {
     concat([
       printedArray,
       "[",
-      indent(concat([softline, join(concat([",", line]), printedIndex)])),
-      concat([softline, "]"])
+      indent(concat([join(concat([",", line]), printedIndex)])),
+      "]"
     ])
   );
 }
