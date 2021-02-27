@@ -150,15 +150,6 @@ function printMethodAddBlock(path, opts, print) {
     parentNode.firstReceiverType = node.firstReceiverType;
   }
 
-  // If we're at the top of a chain, then we're going to print out a nice
-  // multi-line layout if this doesn't break into multiple lines.
-  if (!chained.includes(parentNode.type) && (node.chain || 0) >= 3) {
-    return ifBreak(
-      group(indent(concat(node.breakDoc.concat(blockDoc)))),
-      concat([callDoc, blockDoc])
-    );
-  }
-
   return concat([callDoc, blockDoc]);
 }
 

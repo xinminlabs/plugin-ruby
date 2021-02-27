@@ -47,17 +47,7 @@ describe("calls", () => {
       end
     `);
 
-    const expected = ruby(`
-      aaa
-        .bbb
-        .ccc
-        .ddd
-        .eee do
-          ${block}
-        end
-    `);
-
-    return expect(content).toChangeFormat(expected);
+    return expect(content).toMatchFormat();
   });
 
   test("tons of calls that fit on one line", () => {
