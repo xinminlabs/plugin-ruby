@@ -58,7 +58,7 @@ function printBlock(braces) {
     // If the parent node is a command node, then there are no parentheses
     // around the arguments to that command, so we need to break the block
     if (
-      ["command", "command_call", "method_add_arg"].includes(blockReceiver.type)
+      ["command", "command_call", "method_add_arg"].includes(blockReceiver.type) && !braces
     ) {
       return concat([breakParent, doBlock]);
     }
